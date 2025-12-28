@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recipe Detail - RecipeManager</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec3713",
+              "background-light": "#f8f6f6",
+              "background-dark": "#221310",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans JP", "sans-serif"],
+              "body": ["Noto Sans JP", "sans-serif"],
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.material-symbols-outlined.fill {
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+    }.custom-checkbox:checked {
+    background-color: #ec3713;
+    border-color: #ec3713;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDYcyg-aE25c_gjNGPuC2JSbkVtzT1VFckkJ5prjI6NPupYmsiZGAw7RFmRqkX95Bk__LVX-1zDVk5bV6nC5FI2O7vM0vrgiOe_ci2SwXRjM4aJKBeHNJCWjSzq3eOnrsbEh4egIPwK56tz7sEKXdakW5C3KmW9QB7kIa9NA6iQbxs1xD4g7q1eYOLoH1EQb4nfz2u-vTSRMLFYDuDHcaGg1meNFyqz3tvITjmm4tbQOa1k8UBbi-WlIdBGfnIQwE32snOv-A_icwU)
+    }.no-scrollbar::-webkit-scrollbar {
+    display: none
+    }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none
+    }#tab-ingredients:checked ~ .tab-content-ingredients {
+        display: block;
+    }
+    #tab-ingredients:checked ~ .tab-controls label[for="tab-ingredients"] {
+        background-color: #ec3713;
+        color: white;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    #tab-ingredients:checked ~ .tab-controls label[for="tab-steps"] {
+        color: #6b7280;
+        background-color: transparent;
+    }
+    #tab-steps:checked ~ .tab-content-steps {
+        display: block;
+    }
+    #tab-steps:checked ~ .tab-controls label[for="tab-steps"] {
+        background-color: #ec3713;
+        color: white;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    #tab-ingredients:checked ~ .tab-controls label[for="tab-ingredients"] {
+        color: #6b7280;
+        background-color: transparent;
+    }.dark #tab-ingredients:checked ~ .tab-controls label[for="tab-ingredients"] {
+        color: white;
+    }
+    .dark #tab-steps:checked ~ .tab-controls label[for="tab-steps"] {
+        color: white;
+    }
+    .dark #tab-ingredients:checked ~ .tab-controls label[for="tab-steps"] {
+        color: #9ca3af;
+    }
+    .dark #tab-steps:checked ~ .tab-controls label[for="tab-ingredients"] {
+        color: #9ca3af;
+    }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#181211] dark:text-white font-display">
+<nav class="sticky top-0 z-50 w-full bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-[#f4f1f0] dark:border-white/10 px-4 md:px-10 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 group" href="#">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">restaurant_menu</span>
+</div>
+<h2 class="text-[#181211] dark:text-white text-lg font-bold tracking-tight group-hover:text-primary transition-colors">RecipeManager</h2>
+</a>
+</div>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-4 md:px-10 py-8 flex flex-col gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+<div class="lg:col-span-3 flex flex-col gap-6 pt-2">
+<h1 class="text-4xl md:text-5xl font-extrabold text-[#181211] dark:text-white leading-[1.1] tracking-tight">
+                    スパイシートマト<br/>バジルパスタ
+                </h1>
+<div class="flex items-center gap-4 text-gray-600 dark:text-gray-300">
+<div class="flex items-center gap-1.5 bg-white dark:bg-white/5 px-3 py-1.5 rounded-lg shadow-sm border border-gray-100 dark:border-white/10">
+<span class="material-symbols-outlined text-primary text-[20px]">schedule</span>
+<span class="text-sm font-medium">20分</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white dark:bg-white/5 px-3 py-1.5 rounded-lg shadow-sm border border-gray-100 dark:border-white/10">
+<span class="material-symbols-outlined text-orange-500 text-[20px]">local_fire_department</span>
+<span class="text-sm font-medium">430 kcal</span>
+</div>
+</div>
+<p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                    フレッシュなバジルと完熟トマトを使った、ピリッと辛い本格的なパスタです。忙しい平日でも20分で作れる簡単レシピ。白ワインとの相性も抜群です。
+                </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<a class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+        #パスタ
+    </a>
+<a class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+        #トマト料理
+    </a>
+<a class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+        #簡単
+    </a>
+<a class="inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+        #洋食
+    </a>
+</div>
+</div>
+<div class="lg:col-span-2 relative group h-[300px] lg:h-[360px] w-full">
+<div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent rounded-[2rem] z-10 pointer-events-none"></div>
+<div class="w-full h-full rounded-[2rem] overflow-hidden shadow-2xl bg-gray-200 dark:bg-gray-800 relative group">
+<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 bg-gray-100 dark:bg-gray-800">
+<span class="material-symbols-outlined text-[64px] mb-2">image_not_supported</span>
+<span class="text-sm font-medium">No Image Available</span>
+</div>
+<img class="relative z-10 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="Close up of delicious spicy tomato basil pasta with steam rising" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2kzouaypaUc-yz1mxk9vhDfj_55adV5wcsi71rytn0DGGOcGUDOiYKGg2_Lmgo_dwpqnIcQTyBXpQ-tC4RsuMTzBofvKixsFqUuNUDKJcdW8PJzadNqhkD5PzNQWJjC5oeVqKIcprqtSCkfDlvjNCRt3NZGrqwWsX9yhPoyrBtLPt3RmCnfk4o2CY_0dyGwMDc33NOZ1wcomQb97DqKoy-6_dUUYL3TSZSLTHBX41NrvVQu2qX1DqmhtnqQIqMo5qRQGOmWT2Fbg"/>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-10 mt-8">
+<div class="flex flex-col gap-6">
+<input checked="" class="hidden peer/ing" id="tab-ingredients" name="recipe-tabs" type="radio"/>
+<input class="hidden peer/steps" id="tab-steps" name="recipe-tabs" type="radio"/>
+<div class="sticky top-[76px] z-40 bg-background-light dark:bg-background-dark pt-2 pb-4 tab-controls">
+<div class="bg-white dark:bg-white/5 p-1.5 rounded-2xl shadow-sm border border-gray-100 dark:border-white/5 inline-flex w-full md:w-auto">
+<label class="flex-1 md:flex-none px-8 py-3 rounded-xl cursor-pointer font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all hover:bg-gray-50 dark:hover:bg-white/10" for="tab-ingredients">
+<span class="material-symbols-outlined">grocery</span>
+                            材料チェックリスト
+                        </label>
+<label class="flex-1 md:flex-none px-8 py-3 rounded-xl cursor-pointer font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all hover:bg-gray-50 dark:hover:bg-white/10" for="tab-steps">
+<span class="material-symbols-outlined">menu_book</span>
+                            作り方・手順
+                        </label>
+</div>
+</div>
+<div class="hidden tab-content-ingredients animate-in fade-in duration-300">
+<div class="bg-white dark:bg-white/5 rounded-[2rem] p-6 md:p-8 shadow-sm border border-gray-100 dark:border-white/5">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-2xl font-bold text-[#181211] dark:text-white">必要な材料</h3>
+<p class="text-gray-500 text-sm mt-1">買い物リストとしてチェックボックスをご活用ください</p>
+</div>
+<div class="flex items-center bg-gray-50 dark:bg-white/10 rounded-xl p-1 border border-gray-200 dark:border-white/10">
+<button class="size-8 flex items-center justify-center rounded-lg bg-white dark:bg-transparent text-gray-600 hover:text-primary shadow-sm hover:shadow-none transition-all">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<div class="px-4 text-center">
+<span class="block text-sm font-bold text-[#181211] dark:text-white">2人分</span>
+</div>
+<button class="size-8 flex items-center justify-center rounded-lg bg-white dark:bg-transparent text-gray-600 hover:text-primary shadow-sm hover:shadow-none transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="mb-2">
+<h4 class="text-sm font-bold text-primary uppercase tracking-wider mb-3">メイン</h4>
+<div class="space-y-3">
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-[#181211] dark:text-white group-hover:text-primary transition-colors">スパゲッティ (1.6mm)</span>
+<span class="text-base font-bold text-gray-900 dark:text-gray-100">200g</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-[#181211] dark:text-white group-hover:text-primary transition-colors">完熟トマト</span>
+<span class="text-base font-bold text-gray-900 dark:text-gray-100">3個</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input checked="" class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-gray-400 line-through transition-colors">ニンニク</span>
+<span class="text-base font-bold text-gray-400 line-through">2片</span>
+</div>
+</label>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-bold text-primary uppercase tracking-wider mb-3">調味料・その他</h4>
+<div class="space-y-3">
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-[#181211] dark:text-white group-hover:text-primary transition-colors">オリーブオイル</span>
+<span class="text-base font-bold text-gray-900 dark:text-gray-100">大さじ2</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-[#181211] dark:text-white group-hover:text-primary transition-colors">鷹の爪 (輪切り)</span>
+<span class="text-base font-bold text-gray-900 dark:text-gray-100">小さじ1</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="custom-checkbox mt-1 size-5 rounded-md border-gray-300 text-primary focus:ring-primary/20 transition-colors" type="checkbox"/>
+<div class="flex-1 flex items-baseline justify-between border-b border-dashed border-gray-200 dark:border-gray-700 pb-2 group-hover:border-transparent transition-colors">
+<span class="text-base font-medium text-[#181211] dark:text-white group-hover:text-primary transition-colors">フレッシュバジル</span>
+<span class="text-base font-bold text-gray-900 dark:text-gray-100">適量</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hidden tab-content-steps animate-in fade-in duration-300">
+<div class="bg-white dark:bg-white/5 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-white/5 flex flex-col gap-8">
+<h3 class="text-2xl font-bold text-[#181211] dark:text-white">作り方</h3>
+<div class="flex gap-4">
+<div class="flex-none flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white font-bold flex items-center justify-center shadow-sm">1</div>
+<div class="w-0.5 h-full bg-gray-100 dark:bg-white/10"></div>
+</div>
+<div class="pb-4 w-full">
+<h4 class="font-bold text-lg mb-2 text-gray-800 dark:text-gray-200">下準備</h4>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed">ニンニクはみじん切りに、トマトは1cm角の角切りにします。バジルは洗って水気を切り、飾り用を残して粗く刻んでおきます。</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-none flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white font-bold flex items-center justify-center shadow-sm">2</div>
+<div class="w-0.5 h-full bg-gray-100 dark:bg-white/10"></div>
+</div>
+<div class="pb-4 w-full">
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">パスタを茹でる</h4>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed">大きめの鍋にお湯を沸かし、塩（分量外：お湯の量の1%）を入れてパスタを茹でます。アルデンテに仕上げるため、袋の表示時間より1分短く茹でます。</p>
+<button class="inline-flex items-center gap-2 px-4 py-2 w-fit rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 font-bold border border-orange-100 dark:border-orange-900/30 hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors group">
+<span class="material-symbols-outlined group-hover:animate-pulse">timer</span>
+<span>7分 タイマーを開始</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-none flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white font-bold flex items-center justify-center shadow-sm">3</div>
+</div>
+<div class="w-full">
+<h4 class="font-bold text-lg mb-2 text-gray-800 dark:text-gray-200">ソースと和える</h4>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed">フライパンでオリーブオイルとニンニク、鷹の爪を弱火で熱し、香りが立ったらトマトを加えます。茹で上がったパスタと茹で汁（大さじ2）を加え、手早く乳化させるように混ぜ合わせます。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6 items-start">
+<div class="bg-white dark:bg-white/5 rounded-[2rem] p-6 shadow-sm border border-gray-100 dark:border-white/5">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-4">栄養成分 (1人分)</h3>
+<div class="mb-6 p-4 bg-green-50 dark:bg-green-900/10 rounded-xl border border-green-100 dark:border-green-900/30">
+<h4 class="flex items-center gap-2 text-sm font-bold text-green-800 dark:text-green-200 mb-2">
+<span class="material-symbols-outlined text-[18px]">health_and_safety</span>
+                                栄養素総評
+                            </h4>
+<p class="text-sm text-green-800/80 dark:text-green-200/80 leading-relaxed">
+                                このレシピは、完熟トマトのリコピンとオリーブオイルの組み合わせにより、抗酸化作用の吸収率が高まる優れた構成です。一食あたり430kcalとカロリーを抑えつつ、炭水化物によるエネルギー補給もしっかり行えます。バジルに含まれるβ-カロテンは、免疫力向上やアンチエイジングにも効果的です。脂質は18gと適度ですが、オリーブオイル由来の良質な不飽和脂肪酸が中心のため、健康維持に役立ちます。
+                            </p>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-gray-500 text-sm">カロリー</span>
+<span class="font-bold text-[#181211] dark:text-white">430 kcal</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-2">
+<div class="bg-orange-500 h-2 rounded-full" style="width: 70%"></div>
+</div>
+<div class="grid grid-cols-3 gap-2 pt-2">
+<div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl text-center">
+<span class="block text-xs text-gray-500 mb-1">タンパク質</span>
+<span class="block font-bold text-primary">12g</span>
+</div>
+<div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl text-center">
+<span class="block text-xs text-gray-500 mb-1">脂質</span>
+<span class="block font-bold text-primary">18g</span>
+</div>
+<div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl text-center">
+<span class="block text-xs text-gray-500 mb-1">炭水化物</span>
+<span class="block font-bold text-primary">65g</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

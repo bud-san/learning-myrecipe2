@@ -1,0 +1,296 @@
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>レシピ一覧 - Recipe Manager</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec3713",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221310",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans JP", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e6dddb; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #896861; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#181211] dark:text-[#f4f1f0] font-display antialiased overflow-x-hidden transition-colors duration-200">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] px-4 py-3 md:px-10 z-20 shadow-sm">
+<div class="flex items-center gap-4 md:gap-8">
+<a class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined text-3xl">restaurant_menu</span>
+<h2 class="text-[#181211] dark:text-white text-lg md:text-xl font-bold leading-tight tracking-[-0.015em] hidden sm:block">RecipeManager</h2>
+</a>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-80 hidden lg:flex flex-col border-r border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] overflow-y-auto h-full">
+<div class="p-6 flex flex-col gap-8">
+<div class="flex flex-col gap-3">
+<h3 class="text-[#181211] dark:text-white text-base font-bold">キーワード検索</h3>
+<label class="flex flex-col w-full">
+<div class="flex w-full items-center rounded-xl bg-[#f4f1f0] dark:bg-[#3a221e] border border-transparent focus-within:border-primary transition-colors h-12 px-3">
+<span class="material-symbols-outlined text-[#896861] dark:text-[#a18e8a]">search</span>
+<input class="flex w-full bg-transparent border-none focus:ring-0 text-[#181211] dark:text-white placeholder:text-[#896861] text-sm font-normal ml-2" placeholder="料理名、食材など..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h3 class="text-[#181211] dark:text-white text-base font-bold">材料カテゴリ</h3>
+<button class="text-xs text-[#896861] hover:text-primary transition-colors">クリア</button>
+</div>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="h-5 w-5 rounded border-[#e6dddb] dark:border-[#5d403b] bg-transparent text-primary focus:ring-primary/20 transition-all checked:bg-primary checked:border-primary" type="checkbox"/>
+<span class="text-[#181211] dark:text-[#f4f1f0] text-sm group-hover:text-primary transition-colors">野菜・フルーツ</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="h-5 w-5 rounded border-[#e6dddb] dark:border-[#5d403b] bg-transparent text-primary focus:ring-primary/20 transition-all checked:bg-primary checked:border-primary" type="checkbox"/>
+<span class="text-[#181211] dark:text-[#f4f1f0] text-sm group-hover:text-primary transition-colors">肉類 (牛・豚)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="h-5 w-5 rounded border-[#e6dddb] dark:border-[#5d403b] bg-transparent text-primary focus:ring-primary/20 transition-all checked:bg-primary checked:border-primary" type="checkbox"/>
+<span class="text-[#181211] dark:text-[#f4f1f0] text-sm group-hover:text-primary transition-colors">鶏肉</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="h-5 w-5 rounded border-[#e6dddb] dark:border-[#5d403b] bg-transparent text-primary focus:ring-primary/20 transition-all checked:bg-primary checked:border-primary" type="checkbox"/>
+<span class="text-[#181211] dark:text-[#f4f1f0] text-sm group-hover:text-primary transition-colors">魚介類</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="h-5 w-5 rounded border-[#e6dddb] dark:border-[#5d403b] bg-transparent text-primary focus:ring-primary/20 transition-all checked:bg-primary checked:border-primary" type="checkbox"/>
+<span class="text-[#181211] dark:text-[#f4f1f0] text-sm group-hover:text-primary transition-colors">パスタ・米</span>
+</label>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-[#181211] dark:text-white text-base font-bold">調理方法</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full bg-primary text-white text-sm font-medium shadow-sm transition-transform active:scale-95">炒める</button>
+<button class="px-3 py-1.5 rounded-full bg-[#f4f1f0] dark:bg-[#3a221e] text-[#181211] dark:text-[#f4f1f0] hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors">焼く</button>
+<button class="px-3 py-1.5 rounded-full bg-[#f4f1f0] dark:bg-[#3a221e] text-[#181211] dark:text-[#f4f1f0] hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors">煮る</button>
+<button class="px-3 py-1.5 rounded-full bg-[#f4f1f0] dark:bg-[#3a221e] text-[#181211] dark:text-[#f4f1f0] hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors">蒸す</button>
+<button class="px-3 py-1.5 rounded-full bg-[#f4f1f0] dark:bg-[#3a221e] text-[#181211] dark:text-[#f4f1f0] hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors">和える</button>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-[#181211] dark:text-white text-base font-bold">調理時間</h3>
+<div class="space-y-4">
+<input class="w-full h-1 bg-[#e6dddb] rounded-lg appearance-none cursor-pointer accent-primary" max="120" min="0" type="range" value="45"/>
+<div class="flex justify-between text-xs text-[#896861]">
+<span>0分</span>
+<span class="font-bold text-primary">45分以内</span>
+<span>120分+</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-[#181211] dark:text-white text-base font-bold">摂取カロリー</h3>
+<div class="space-y-4">
+<input class="w-full h-1 bg-[#e6dddb] rounded-lg appearance-none cursor-pointer accent-primary" max="1000" min="0" type="range" value="600"/>
+<div class="flex justify-between text-xs text-[#896861]">
+<span>0kcal</span>
+<span class="font-bold text-primary">600kcal以下</span>
+<span>1000kcal+</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#181211] dark:text-white text-2xl md:text-3xl font-black leading-tight tracking-[-0.033em]">レシピ検索結果</h1>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm font-normal">条件に一致するレシピが 12件 見つかりました</p>
+</div>
+<button class="lg:hidden flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#2a1714] border border-[#e6dddb] dark:border-[#442c29] rounded-lg shadow-sm text-sm font-medium">
+<span class="material-symbols-outlined text-primary">filter_list</span>
+                                絞り込み
+                            </button>
+<div class="flex items-center gap-3">
+<span class="text-sm font-medium text-[#896861]">並び替え:</span>
+<select class="bg-transparent border-none text-[#181211] dark:text-white font-bold text-sm focus:ring-0 p-0 pr-8 cursor-pointer">
+<option>人気順</option>
+<option>新着順</option>
+<option>調理時間が短い順</option>
+<option>カロリーが低い順</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 pb-10">
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Healthy bowl with vegetables, eggs and avocado" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRvazWhv-YQFpwcyCjrUTX_6tXMHVGyJjwwG-TsxTi_DYtDJnNVs2fGi7BixxDvIAJ7nqVJ5D9iB_N6lZrivohTZr4jVM1_rRQ061S5y6e4GcsxkIgfwfr0HXDkrjExxt5b7zoVI9oBM3T07QkiLQcEqU9FTuzfm02xKQ9_S5GHJ9f8P_jIH2biut5VHktaIY6eWJbN9l0beKAj9W9V7aRtdUGAmGRNViLzjYPzpVHdvkieV9yEQGa0bZH102_z6lATFEE1yIB88k"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">アボカドとポーチドエッグのグリーンサラダ</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300">ヘルシー</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">朝食</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">旬の新鮮な緑黄色野菜に、クリーミーなアボカドととろりとしたポーチドエッグをトッピング。自家製レモンドレッシングでさっぱりと仕上げました。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 25分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 320kcal
+                                        </div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Slice of pepperoni pizza with basil" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDys9JgfbaS6WjQI_lEVTAfmQwqxXo27n3LOhI3hx8bQAK5P0ShaEDrKmOQrV7tJubogLTa9k-tNSZCSQqzqsjF8w-pNJthb32ErfbhDNlitnzDtJqsWbpKJkEgs1ODIEeSPS2s-8czTGU01f9X8Qgmv2UXfVGzQr8P_FE0uCID-8bu3bs-dSB7ASAzrdsET_atFCTtmpWUlgJhvRu0qWXnl8rWAZQkbKn9r5Th6VcaYJpL8h4ChVhMu41a1Qz1iPdoEL6BVdBsuE0"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">自家製ペパロニピザ</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">イタリアン</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">パーティー</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">クリスピーな薄生地にこだわった、本格的なニューヨークスタイルピザ。スパイシーなペパロニと濃厚なモッツァレラチーズの相性が抜群です。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 45分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 650kcal
+                                        </div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Toast with egg and spinach on a plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPobcLnhKYxYJRx1ws6356H4PSKyjlNd9gGSWX-MwvB64jCRNkUncuSbv47hfUsMamaxew5DsN-pEhfIeHLw5c8R9QBWTG72RKCxKy1othyl6f0FxwsdrmpB9GTxNMAuF1W2nYoeIDCsksruzXVO-EBMYK3-bPuLug8liVlob5MTJUUyoW5byIAlex9euBrJ_oOwqi7zIfHvrIfaJ1SRkdOn0TjVONlGbt7E2SaLFLakPEmBp0j0rYwQbzhtBBS0RhIrQDxgyUz0M"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">ほうれん草と卵のトースト</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">朝食</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">時短</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">忙しい朝にぴったりな、エネルギーチャージレシピ。鉄分豊富なほうれん草と半熟卵を乗せた、シンプルながらも満足感のあるトーストです。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 15分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 280kcal
+                                        </div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Delicious chocolate cake with berries" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3my7XU39m1JpoNx2s1yI7sIGj2hQWwKixs1pJXhTYUhCPt4ggTD6O_p0wNj0HMn3a0BXY65oErnz-19Lg3vR6C3Ql-cZakUvgblNJq-dODx_eaVeH8obNbgZG9jfTwtbgeoJ1pDLUy0Mmy_aw5tRhqs-GqkMSVMNpOaE_luxT7meUyqgdyioZJ5UjegnAqmu9oanpf4fKAB9mr0vdD2xOCnESxNViNXRZQte7dENfRQSN2V46uYeRcY2HJZqEFoM627zUfwU_v6o"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">ベリーとチョコレートのケーキ</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-pink-50 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300">スイーツ</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">お祝い</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">濃厚なダークチョコレートケーキに、甘酸っぱいイチゴとラズベリーを贅沢にトッピング。特別な日のデザートに最適です。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 90分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 450kcal
+                                        </div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Colorful stir fry vegetables in a wok" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwmfbw0tihzWAPNe7-mmqATZ4YfCwn2tTEb_qdPtYAHPLQrMJzJqgIG4QRul00Auq5yd1Xld3XfvdETTqQtFGe6hWNGTljuTVcRU0UnWLMFJw31tWZ-atfHbt5RKHj5wtiJH43CjXn5h9YXfKZYK1TDQX2zn_JfSsZVjZtxLC7cjjqD7cgtlMdI0aTLzEuocRejxymDqiEZR3gX4yZGEtm9e9CMeHxIv6SMyR0Qq0qGYIusmFJMRPvsBRFF-_QzsQjWUdBR9EaLDg"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">彩り野菜の炒め物</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300">野菜</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">時短</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">冷蔵庫の余り野菜でも美味しく作れる、簡単でヘルシーな炒め物。強火でさっと炒めることで、野菜のシャキシャキ食感を残しました。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 20分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 210kcal
+                                        </div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-white dark:bg-[#2a1714] rounded-2xl overflow-hidden shadow-sm border border-transparent hover:border-[#e6dddb] dark:hover:border-[#442c29] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-56 overflow-hidden bg-[#f4f1f0] dark:bg-[#3a221e]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Grilled chicken breast with salad" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIM9cJB46QLix_cLQRBSAf7ey-tUiwT4GwfaPVwnoRKHUtA8FPWpHzmOy4Yu-hpwXIQ0W1_nWxlKVbb5Mn1NCEBJZJLXlTm1iNW6Ow7mE5CpLYcr9mO-ExWSDbO9vhh8GttJxX9DbxR5yQOEhGMyYuuR0jxm5-jz2wY5hR4y4Z_67eZ_x61xeaSbvniA7BXb2j7OZkSfNcHaFtzB4_Q4ThaCfmC20z_EKcJWMsprhILCUpYde63qDBRcvnf2p_sbL7PllKd4SOUko"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<h3 class="text-lg font-bold text-[#181211] dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">レモンハーブグリルチキン</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300">メイン</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300">高タンパク</span>
+</div>
+<p class="text-[#896861] dark:text-[#a18e8a] text-sm leading-relaxed mb-4 line-clamp-3">レモン、ガーリック、数種類のハーブでマリネした鶏胸肉をジューシーに焼き上げました。さっぱりとしていながらも旨味たっぷりです。</p>
+<div class="mt-auto pt-4 border-t border-[#f4f1f0] dark:border-[#3a221e] flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">timer</span> 35分
+                                        </div>
+<div class="flex items-center gap-1.5 text-xs font-bold text-[#896861] dark:text-[#a18e8a]">
+<span class="material-symbols-outlined text-lg">local_fire_department</span> 380kcal
+                                        </div>
+</div>
+</div>
+</article>
+</div>
+<div class="flex justify-center pb-12">
+<div class="flex items-center gap-2">
+<button class="size-10 flex items-center justify-center rounded-full border border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] text-[#181211] dark:text-white hover:bg-[#f4f1f0] dark:hover:bg-[#3a221e] transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full bg-primary text-white font-bold shadow-md shadow-primary/20">1</button>
+<button class="size-10 flex items-center justify-center rounded-full border border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] text-[#181211] dark:text-white hover:bg-[#f4f1f0] dark:hover:bg-[#3a221e] transition-colors">2</button>
+<button class="size-10 flex items-center justify-center rounded-full border border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] text-[#181211] dark:text-white hover:bg-[#f4f1f0] dark:hover:bg-[#3a221e] transition-colors">3</button>
+<span class="text-[#896861] px-2">...</span>
+<button class="size-10 flex items-center justify-center rounded-full border border-[#e6dddb] dark:border-[#442c29] bg-white dark:bg-[#2a1714] text-[#181211] dark:text-white hover:bg-[#f4f1f0] dark:hover:bg-[#3a221e] transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div></body></html>

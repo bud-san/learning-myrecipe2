@@ -1,0 +1,49 @@
+# https://developers.openai.com/codex/local-config/
+
+approval_policy = "on-request"
+# approval_policy = "untrusted"
+
+# サンドボックス設定（workspace-write: カレントディレクトリ以下のみ編集許可）
+# sandbox_mode = "danger-full-access"
+sandbox_mode = "workspace-write"
+
+# 推論の深さ（highにすると時間がかかる場合があるが、精度が向上する）
+model_reasoning_effort = "medium"
+
+# 推論プロセスの表示（detailedで思考過程を表示）
+model_reasoning_summary = "auto"
+
+# ネットワークアクセス許可
+network_access = true
+
+# Web検索の可否
+[tools]
+web_search = false
+
+# エラー回避策?
+[features]
+unified_exec = true
+
+# MCPサーバ
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@latest"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest"]
+
+[mcp_servers.microcms]
+command = "npx"
+args = ["-y",
+        "microcms-mcp-server@latest",
+        "--service-id",
+        "${VITE_MICROCMS_SERVICE_DOMAIN}",
+        "--api-key",
+        "${VITE_MICROCMS_API_KEY}"]
+envfile = "${workspaceFolder}/.env"
+
+[mcp_servers.microcms-document]
+command = "npx"
+args = ["-y", "microcms-document-mcp-server"]
