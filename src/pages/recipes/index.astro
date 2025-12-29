@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import RecipeCard from '../../components/RecipeCard.astro'
+import { fetchAllRecipes } from '../../lib/microcms'
+
+const recipes = await fetchAllRecipes()
+const methods = Array.from(new Set(recipes.flatMap((recipe) => recipe.cooking ?? []))).filter(Boolean)
+const recipePayload = JSON.stringify(recipes).replace(/</g, '\\u003c')
+---
+
+<BaseLayout title="RecipeHub - レシピ一覧">
+  <Header />
+  <main class="flex-1 flex flex-col items-center w-full">
+    <div class="w-full max-w-[1200px] px-4 md:px-8 py-8 space-y-6">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <p class="text-sm text-[#896861] dark:text-[#a08d89]">microCMSのデータをもとに構築</p>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-[-0.02em]">レシピ一覧</h1>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <label class="flex w-full sm:w-72 items-center gap-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-4 py-2 shadow-sm">
+              <span class="material-symbols-outlined text-[#896861] dark:text-[#a08d89]">search</span>
+              <input
+                class="flex-1 bg-transparent text-sm focus:outline-none text-[#181211] dark:text-white placeholder:text-[#896861] dark:placeholder:text-[#6e5a56]"
+                type="search"
+                placeholder="タイトル・材料で検索"
+                data-search
+              />
+            </label>
+            <div class="flex items-center gap-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-4 py-2 shadow-sm w-full sm:w-56">
+              <span class="material-symbols-outlined text-[#896861] dark:text-[#a08d89]">sort</span>
+              <select class="bg-transparent text-sm flex-1 focus:outline-none text-[#181211] dark:text-white" data-sort>
+                <option value="recent">新しい順</option>
+                <option value="old">古い順</option>
+                <option value="title">タイトル順</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {methods.length > 0 && (
+          <div class="flex flex-wrap gap-2 items-center">
+            <button
+              class="filter-chip active bg-primary text-white border-primary"
+              type="button"
+              data-method=""
+            >
+              すべて
+            </button>
+            {methods.map((method) => (
+              <button
+                class="filter-chip"
+                type="button"
+                data-method={method}
+              >
+                {method}
+              </button>
+            ))}
+          </div>
+        )}
+        <p class="text-sm text-[#896861] dark:text-[#a08d89]">
+          <span data-counter>{recipes.length}</span> 件のレシピ
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-recipe-list>
+        {recipes.map((recipe) => (
+          <RecipeCard recipe={recipe} />
+        ))}
+      </div>
+    </div>
+
+    <script type="application/json" id="recipes-data">
+      {recipePayload}
+    </script>
+
+    <template id="recipe-card-template">
+      <a class="card group cursor-pointer overflow-hidden hover:-translate-y-1 h-full flex flex-col" href="#">
+        <div class="w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 relative overflow-hidden shrink-0">
+          <div class="absolute inset-0 flex items-center justify-center text-gray-300 dark:text-gray-600">
+            <span class="material-symbols-outlined text-5xl">image</span>
+          </div>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3" data-tags></div>
+          <h3 class="text-[#181211] dark:text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors mb-2" data-title></h3>
+          <p class="text-sm text-[#896861] dark:text-[#a08d89] mb-4 flex-1" data-description></p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-dashed border-[#e6dddb] dark:border-[#3e2d2a] text-xs text-[#896861] dark:text-[#a08d89]">
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">schedule</span>
+              <span data-updated></span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+              <span data-ai></span>
+            </span>
+          </div>
+        </div>
+      </a>
+    </template>
+
+    <script>
+      const dataEl = document.getElementById('recipes-data')
+      const recipesData = dataEl?.textContent ? JSON.parse(dataEl.textContent) : []
+      const listEl = document.querySelector('[data-recipe-list]')
+      const counterEl = document.querySelector('[data-counter]')
+      const searchInput = document.querySelector('[data-search]')
+      const sortSelect = document.querySelector('[data-sort]')
+      const methodButtons = Array.from(document.querySelectorAll('[data-method]'))
+      const template = document.getElementById('recipe-card-template')
+      const formatter = new Intl.DateTimeFormat('ja-JP')
+
+      const params = new URLSearchParams(location.search)
+      const state = {
+        q: params.get('q') ?? '',
+        sort: params.get('sort') ?? 'recent',
+        method: params.get('method') ?? '',
+      }
+
+      if (searchInput) searchInput.value = state.q
+      if (sortSelect) sortSelect.value = state.sort
+
+      const setActiveMethod = (value) => {
+        methodButtons.forEach((btn) => {
+          if (btn.dataset.method === value) {
+            btn.classList.add('bg-primary', 'text-white', 'border-primary')
+          } else {
+            btn.classList.remove('bg-primary', 'text-white', 'border-primary')
+          }
+        })
+      }
+
+      setActiveMethod(state.method)
+
+      const matchesQuery = (recipe, q) => {
+        if (!q) return true
+        const lower = q.toLowerCase()
+        const searchableFields = [
+          recipe.title,
+          ...(recipe.ingredients ?? []).map((item) => item.ingredients?.title ?? ''),
+          ...(recipe.ingredients ?? []).map((item) => item.parts ?? ''),
+          ...(recipe.steps ?? []).map((step) => step.description ?? ''),
+        ]
+        return searchableFields.some((field) => field?.toLowerCase().includes(lower))
+      }
+
+      const matchesMethod = (recipe, method) => {
+        if (!method) return true
+        return (recipe.cooking ?? []).includes(method)
+      }
+
+      const sortRecipes = (items, sortKey) => {
+        const sorted = [...items]
+        if (sortKey === 'recent') {
+          sorted.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        } else if (sortKey === 'old') {
+          sorted.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt))
+        } else if (sortKey === 'title') {
+          sorted.sort((a, b) => a.title.localeCompare(b.title, 'ja'))
+        }
+        return sorted
+      }
+
+      const renderCards = (items) => {
+        if (!listEl || !(template instanceof HTMLTemplateElement)) return
+        listEl.innerHTML = ''
+
+        items.forEach((recipe) => {
+          const fragment = template.content.cloneNode(true)
+          const anchor = fragment.querySelector('a')
+          const titleEl = fragment.querySelector('[data-title]')
+          const descEl = fragment.querySelector('[data-description]')
+          const updatedEl = fragment.querySelector('[data-updated]')
+          const aiEl = fragment.querySelector('[data-ai]')
+          const tagsEl = fragment.querySelector('[data-tags]')
+
+          if (anchor) anchor.href = `/recipes/${recipe.id}`
+          if (titleEl) titleEl.textContent = recipe.title
+          if (descEl) {
+            if (recipe.description) {
+              descEl.textContent = recipe.description
+              descEl.classList.remove('hidden')
+            } else {
+              descEl.classList.add('hidden')
+            }
+          }
+          if (updatedEl) updatedEl.textContent = `更新 ${formatter.format(new Date(recipe.updatedAt))}`
+          if (aiEl) aiEl.textContent = recipe.ai ? 'AI評価あり' : 'AI評価なし'
+
+          if (tagsEl) {
+            tagsEl.innerHTML = ''
+            if (Array.isArray(recipe.cooking)) {
+              recipe.cooking.forEach((tag) => {
+                const chip = document.createElement('span')
+                chip.className =
+                  'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200'
+                chip.textContent = tag
+                tagsEl.appendChild(chip)
+              })
+            }
+          }
+
+          listEl.appendChild(fragment)
+        })
+      }
+
+      const applyFilters = () => {
+        let filtered = recipesData.filter((recipe) => matchesQuery(recipe, state.q))
+        filtered = filtered.filter((recipe) => matchesMethod(recipe, state.method))
+        filtered = sortRecipes(filtered, state.sort)
+        if (counterEl) counterEl.textContent = filtered.length
+        renderCards(filtered)
+
+        const nextParams = new URLSearchParams()
+        if (state.q) nextParams.set('q', state.q)
+        if (state.sort && state.sort !== 'recent') nextParams.set('sort', state.sort)
+        if (state.method) nextParams.set('method', state.method)
+        const nextUrl = `${location.pathname}${nextParams.toString() ? `?${nextParams.toString()}` : ''}`
+        history.replaceState({}, '', nextUrl)
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (event) => {
+          state.q = event.target.value.trim()
+          applyFilters()
+        })
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener('change', (event) => {
+          state.sort = event.target.value
+          applyFilters()
+        })
+      }
+
+      methodButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          state.method = button.dataset.method ?? ''
+          setActiveMethod(state.method)
+          applyFilters()
+        })
+      })
+
+      applyFilters()
+    </script>
+  </main>
+</BaseLayout>

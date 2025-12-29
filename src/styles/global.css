@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #ec3713;
+  --color-background-light: #f8f6f6;
+  --color-background-dark: #221310;
+  --color-surface: #ffffff;
+  --color-surface-dark: #2f1f1c;
+  --color-text-strong: #181211;
+  --color-text-strong-dark: #f4f1f0;
+  --color-text-muted: #896861;
+  --color-text-muted-dark: #a08d89;
+  --color-border: #e6dddb;
+  --color-border-dark: #3e2d2a;
+  --font-display: "Plus Jakarta Sans", "Noto Sans JP", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+  --radius-xl: 2rem;
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background-light);
+  color: var(--color-text-strong);
+}
+
+.dark body {
+  background-color: var(--color-background-dark);
+  color: var(--color-text-strong-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text-strong);
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--color-text-strong-dark);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  background-color: var(--color-surface);
+  color: var(--color-text-strong);
+  border: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.dark .filter-chip {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-strong-dark);
+  border-color: var(--color-border-dark);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-primary);
+  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card {
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dark .card {
+  border-color: var(--color-border-dark);
+  background-color: var(--color-surface-dark);
+}
+
+.card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,23 @@
+---
+import type { RecipeIngredient } from '../lib/microcms'
+
+const { ingredients } = Astro.props as { ingredients: RecipeIngredient[] }
+---
+
+<section class="card p-6 space-y-4">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">grocery</span>
+    <h2 class="text-xl font-bold">必要な材料</h2>
+  </div>
+  <ul class="space-y-3">
+    {ingredients.map((item) => (
+      <li id={item.ingredients.id} class="flex justify-between gap-4 border-b border-dashed border-[#e6dddb] dark:border-[#3e2d2a] pb-2">
+        <div>
+          <p class="font-medium text-[#181211] dark:text-white">{item.ingredients.title}</p>
+          {item.parts && <p class="text-sm text-[#896861] dark:text-[#a08d89]">{item.parts}</p>}
+        </div>
+        <p class="text-sm text-[#181211] dark:text-white">{item.quantity ?? '-'}</p>
+      </li>
+    ))}
+  </ul>
+</section>

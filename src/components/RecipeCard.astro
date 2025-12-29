@@ -1,0 +1,43 @@
+---
+import type { Recipe } from '../lib/microcms'
+
+const { recipe } = Astro.props as { recipe: Recipe }
+---
+
+<a
+  class="card group cursor-pointer overflow-hidden hover:-translate-y-1 h-full flex flex-col"
+  href={`/recipes/${recipe.id}`}
+>
+  <div class="w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 relative overflow-hidden shrink-0">
+    <div class="absolute inset-0 flex items-center justify-center text-gray-300 dark:text-gray-600">
+      <span class="material-symbols-outlined text-5xl">image</span>
+    </div>
+  </div>
+  <div class="p-4 flex flex-col flex-1">
+    {recipe.cooking && recipe.cooking.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-3">
+        {recipe.cooking.map((item) => (
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200">
+            {item}
+          </span>
+        ))}
+      </div>
+    )}
+    <h3 class="text-[#181211] dark:text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors mb-2">
+      {recipe.title}
+    </h3>
+    {recipe.description && (
+      <p class="text-sm text-[#896861] dark:text-[#a08d89] line-clamp-3 mb-4 flex-1">{recipe.description}</p>
+    )}
+    <div class="flex items-center justify-between mt-auto pt-3 border-t border-dashed border-[#e6dddb] dark:border-[#3e2d2a] text-xs text-[#896861] dark:text-[#a08d89]">
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[18px]">schedule</span>
+        更新 {new Intl.DateTimeFormat('ja-JP').format(new Date(recipe.updatedAt))}
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+        AI評価 {recipe.ai ? 'あり' : 'なし'}
+      </span>
+    </div>
+  </div>
+</a>

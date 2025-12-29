@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import RecipeCard from '../components/RecipeCard.astro'
+import { fetchIngredients, fetchRecipes } from '../lib/microcms'
+
+const { contents: recipes } = await fetchRecipes({ limit: 4, orders: '-updatedAt', depth: 1 })
+const { contents: ingredients } = await fetchIngredients({ limit: 6 })
+
+const cookingTags = Array.from(new Set(recipes.flatMap((recipe) => recipe.cooking ?? []))).slice(0, 6)
+---
+
+<BaseLayout title="RecipeHub - トップページ">
+  <Header />
+  <main class="flex-1 flex flex-col items-center w-full">
+    <div class="w-full max-w-[1200px] px-4 md:px-8 pb-10">
+      <section class="py-8 md:py-10">
+        <div
+          class="flex min-h-[420px] md:min-h-[500px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-2xl md:rounded-[2rem] items-center justify-center p-6 md:p-10 shadow-lg relative overflow-hidden"
+          style='background-image: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80");'
+        >
+          <div class="flex flex-col gap-3 text-center z-10 max-w-2xl">
+            <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-md">
+              今日は何を作りますか？
+            </h1>
+            <p class="text-white/90 text-sm md:text-lg font-normal leading-normal drop-shadow-sm">
+              コミュニティから最高のレシピを見つけよう。
+            </p>
+          </div>
+          <form class="flex flex-col h-14 w-full max-w-[560px] md:h-16 z-10 mt-4" action="/recipes" method="get">
+            <div class="flex w-full flex-1 items-stretch rounded-full h-full shadow-xl bg-white dark:bg-[#2f1f1c] overflow-hidden p-1.5 transition-all focus-within:ring-4 focus-within:ring-primary/20">
+              <div class="text-[#896861] dark:text-[#a08d89] flex items-center justify-center pl-4 pr-2">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+              <input
+                class="flex w-full min-w-0 flex-1 resize-none bg-transparent text-[#181211] dark:text-white focus:outline-0 placeholder:text-[#896861] dark:placeholder:text-[#6e5a56] px-2 text-base font-normal leading-normal"
+                placeholder="料理名、食材で検索..."
+                name="q"
+              />
+              <button
+                class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-full h-full px-6 bg-primary hover:bg-red-600 transition-colors text-white text-base font-bold leading-normal tracking-[0.015em]"
+                type="submit"
+              >
+                <span class="truncate">検索</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">grocery</span>
+              <h2 class="text-[#181211] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">材料で探す</h2>
+            </div>
+            <a class="text-primary text-sm font-bold hover:underline" href="/recipes">レシピ一覧へ</a>
+          </div>
+          <div class="flex gap-3 flex-wrap">
+            {ingredients.map((item) => (
+              <a
+                class="group flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-5 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer shadow-sm"
+                href={`/recipes?q=${encodeURIComponent(item.title)}`}
+              >
+                <span class="text-[#181211] dark:text-white text-sm font-medium leading-normal group-hover:text-primary">{item.title}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {cookingTags.length > 0 && (
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">skillet</span>
+              <h2 class="text-[#181211] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">調理方法で探す</h2>
+            </div>
+            <div class="flex gap-3 flex-wrap">
+              {cookingTags.map((item) => (
+                <a
+                  class="group flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-5 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer shadow-sm"
+                  href={`/recipes?method=${encodeURIComponent(item)}`}
+                >
+                  <span class="text-[#181211] dark:text-white text-sm font-medium leading-normal group-hover:text-primary">{item}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div class="flex flex-col gap-4 mt-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">recommend</span>
+              <h2 class="text-[#181211] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">おすすめレシピ一覧</h2>
+            </div>
+            <a class="text-primary text-sm font-bold hover:underline" href="/recipes">すべて見る</a>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {recipes.map((recipe) => (
+              <RecipeCard recipe={recipe} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

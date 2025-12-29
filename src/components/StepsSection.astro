@@ -1,0 +1,30 @@
+---
+import type { RecipeStep } from '../lib/microcms'
+
+const { steps } = Astro.props as { steps: RecipeStep[] }
+---
+
+<section class="card p-6 space-y-4">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">restaurant</span>
+    <h2 class="text-xl font-bold">作り方</h2>
+  </div>
+  <ol class="space-y-4">
+    {steps.map((step, index) => (
+      <li class="flex gap-4 items-start">
+        <div class="flex items-center justify-center rounded-full bg-primary/10 text-primary size-9 font-bold shrink-0">
+          {index + 1}
+        </div>
+        <div class="space-y-2">
+          <p class="text-[#181211] dark:text-white leading-relaxed whitespace-pre-wrap">{step.description}</p>
+          {step.timer && (
+            <div class="inline-flex items-center gap-1 text-sm text-[#896861] dark:text-[#a08d89]">
+              <span class="material-symbols-outlined text-[18px]">timer</span>
+              <span>{step.timer}秒</span>
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
