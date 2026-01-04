@@ -4,27 +4,86 @@ import type { RecipeStep } from '../lib/microcms'
 const { steps } = Astro.props as { steps: RecipeStep[] }
 ---
 
-<section class="card p-6 space-y-4">
-  <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-primary">restaurant</span>
-    <h2 class="text-xl font-bold">作り方</h2>
+<section class="bg-white dark:bg-white/5 rounded-[2rem] p-6 md:p-8 shadow-sm border border-gray-100 dark:border-white/5">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-2xl font-bold text-[#181211] dark:text-white">作り方・手順</h3>
+    <span class="text-sm text-gray-500 dark:text-gray-400">全{steps.length}ステップ</span>
   </div>
-  <ol class="space-y-4">
+  <div class="flex flex-col gap-6">
+    {steps.length === 0 && <p class="text-sm text-gray-500">手順が登録されていません。</p>}
     {steps.map((step, index) => (
-      <li class="flex gap-4 items-start">
-        <div class="flex items-center justify-center rounded-full bg-primary/10 text-primary size-9 font-bold shrink-0">
-          {index + 1}
+      <div class="flex gap-4">
+        <div class="flex-none flex flex-col items-center gap-2">
+          <div class="size-8 rounded-full bg-primary text-white font-bold flex items-center justify-center shadow-sm">
+            {index + 1}
+          </div>
+          {index < steps.length - 1 && <div class="w-0.5 h-full bg-gray-100 dark:bg-white/10"></div>}
         </div>
-        <div class="space-y-2">
-          <p class="text-[#181211] dark:text-white leading-relaxed whitespace-pre-wrap">{step.description}</p>
-          {step.timer && (
-            <div class="inline-flex items-center gap-1 text-sm text-[#896861] dark:text-[#a08d89]">
-              <span class="material-symbols-outlined text-[18px]">timer</span>
-              <span>{step.timer}秒</span>
-            </div>
-          )}
+        <div class="pb-4 w-full">
+          <div class="flex flex-col gap-3">
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">{step.description}</p>
+            {step.timer && (
+              <button
+                class="inline-flex items-center gap-2 px-4 py-2 w-fit rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 font-bold border border-orange-100 dark:border-orange-900/30 hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                type="button"
+                data-timer-seconds={step.timer}
+              >
+                <span class="material-symbols-outlined text-[18px]">timer</span>
+                <span data-timer-label>{step.timer}秒 タイマーを開始</span>
+              </button>
+            )}
+          </div>
         </div>
-      </li>
+      </div>
     ))}
-  </ol>
+  </div>
 </section>
+
+<script>
+  const timerButtons = document.querySelectorAll('[data-timer-seconds]')
+
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+  }
+
+  timerButtons.forEach((button) => {
+    const label = button.querySelector('[data-timer-label]')
+    const initial = Number(button.getAttribute('data-timer-seconds') ?? 0)
+
+    if (!(label instanceof HTMLElement) || Number.isNaN(initial) || initial <= 0) {
+      return
+    }
+
+    const resetLabel = () => {
+      label.textContent = `${initial}秒 タイマーを開始`
+    }
+
+    resetLabel()
+
+    button.addEventListener('click', () => {
+      if (button.disabled) return
+
+      button.disabled = true
+      let remaining = initial
+      label.textContent = `残り ${formatTime(remaining)}`
+
+      const intervalId = window.setInterval(() => {
+        remaining -= 1
+
+        if (remaining <= 0) {
+          window.clearInterval(intervalId)
+          label.textContent = '完了しました'
+          window.setTimeout(() => {
+            resetLabel()
+            button.disabled = false
+          }, 1500)
+          return
+        }
+
+        label.textContent = `残り ${formatTime(remaining)}`
+      }, 1000)
+    })
+  })
+</script>

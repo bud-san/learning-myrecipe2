@@ -31,3 +31,54 @@
 button{
   cursor: pointer;
 }
+
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.custom-checkbox:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox:checked + .ingredient-content .ingredient-name,
+.custom-checkbox:checked + .ingredient-content .ingredient-quantity {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+#tab-ingredients:checked ~ .tab-content-ingredients {
+  display: block;
+}
+
+#tab-steps:checked ~ .tab-content-steps {
+  display: block;
+}
+
+#tab-ingredients:checked ~ .tab-controls label[for="tab-ingredients"],
+#tab-steps:checked ~ .tab-controls label[for="tab-steps"] {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+#tab-ingredients:checked ~ .tab-controls label[for="tab-steps"],
+#tab-steps:checked ~ .tab-controls label[for="tab-ingredients"] {
+  color: #6b7280;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.dark #tab-ingredients:checked ~ .tab-controls label[for="tab-steps"],
+.dark #tab-steps:checked ~ .tab-controls label[for="tab-ingredients"] {
+  color: #9ca3af;
+}
