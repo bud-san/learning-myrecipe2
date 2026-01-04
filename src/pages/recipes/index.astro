@@ -43,7 +43,7 @@ const recipePayload = JSON.stringify(recipes).replace(/</g, '\\u003c')
         {methods.length > 0 && (
           <div class="flex flex-wrap gap-2 items-center">
             <button
-              class="filter-chip active bg-primary text-white border-primary"
+              class="active px-3 py-1.5 rounded-full bg-surface dark:bg-surface-dark text-[#181211] dark:text-surface hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors"
               type="button"
               data-method=""
             >
@@ -51,7 +51,7 @@ const recipePayload = JSON.stringify(recipes).replace(/</g, '\\u003c')
             </button>
             {methods.map((method) => (
               <button
-                class="filter-chip"
+                class="px-3 py-1.5 rounded-full bg-surface dark:bg-surface-dark text-[#181211] dark:text-[#f4f1f0] hover:bg-[#e6dddb] dark:hover:bg-[#4a2e29] text-sm font-medium transition-colors"
                 type="button"
                 data-method={method}
               >
