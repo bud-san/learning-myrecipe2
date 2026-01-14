@@ -7,6 +7,9 @@ import { fetchAllRecipes } from '../../lib/microcms'
 const recipes = await fetchAllRecipes()
 const methods = Array.from(new Set(recipes.flatMap((recipe) => recipe.cooking ?? []))).filter(Boolean)
 const recipePayload = JSON.stringify(recipes).replace(/</g, '\\u003c')
+// ベースURLを取得（末尾にスラッシュを確実に追加）
+const baseUrlRaw = import.meta.env.BASE_URL
+const baseUrl = baseUrlRaw.endsWith('/') ? baseUrlRaw : `${baseUrlRaw}/`
 ---
 
 <BaseLayout title="RecipeHub - レシピ一覧">
@@ -176,7 +179,7 @@ const recipePayload = JSON.stringify(recipes).replace(/</g, '\\u003c')
           const aiEl = fragment.querySelector('[data-ai]')
           const tagsEl = fragment.querySelector('[data-tags]')
 
-          if (anchor) anchor.href = `/recipes/${recipe.id}`
+          if (anchor) anchor.href = `${baseUrl}recipes/${recipe.id}`
           if (titleEl) titleEl.textContent = recipe.title
           if (descEl) {
             if (recipe.description) {

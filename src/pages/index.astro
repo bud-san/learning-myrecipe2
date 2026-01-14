@@ -83,7 +83,7 @@ const baseUrl = baseUrlRaw.endsWith('/') ? baseUrlRaw : `${baseUrlRaw}/`
               {cookingTags.map((item) => (
                 <a
                   class="group flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-5 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer shadow-sm"
-                  href={`/recipes?method=${encodeURIComponent(item)}`}
+                  href={`${baseUrl}recipes?method=${encodeURIComponent(item)}`}
                 >
                   <span class="text-[#181211] dark:text-white text-sm font-medium leading-normal group-hover:text-primary">{item}</span>
                 </a>
