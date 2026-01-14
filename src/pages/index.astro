@@ -8,6 +8,10 @@ const { contents: recipes } = await fetchRecipes({ limit: 4, orders: '-updatedAt
 const { contents: ingredients } = await fetchIngredients({ limit: 6 })
 
 const cookingTags = Array.from(new Set(recipes.flatMap((recipe) => recipe.cooking ?? []))).slice(0, 6)
+
+// ベースURLを取得（末尾にスラッシュを確実に追加）
+const baseUrlRaw = import.meta.env.BASE_URL
+const baseUrl = baseUrlRaw.endsWith('/') ? baseUrlRaw : `${baseUrlRaw}/`
 ---
 
 <BaseLayout title="RecipeHub - トップページ">
@@ -27,7 +31,7 @@ const cookingTags = Array.from(new Set(recipes.flatMap((recipe) => recipe.cookin
               コミュニティから最高のレシピを見つけよう。
             </p>
           </div>
-          <form class="flex flex-col h-14 w-full max-w-[560px] md:h-16 z-10 mt-4" action="/recipes" method="get">
+          <form class="flex flex-col h-14 w-full max-w-[560px] md:h-16 z-10 mt-4" action=`${baseUrl}recipes` method="get">
             <div class="flex w-full flex-1 items-stretch rounded-full h-full shadow-xl bg-white dark:bg-[#2f1f1c] overflow-hidden p-1.5 transition-all focus-within:ring-4 focus-within:ring-primary/20">
               <div class="text-[#896861] dark:text-[#a08d89] flex items-center justify-center pl-4 pr-2">
                 <span class="material-symbols-outlined">search</span>
@@ -55,13 +59,13 @@ const cookingTags = Array.from(new Set(recipes.flatMap((recipe) => recipe.cookin
               <span class="material-symbols-outlined text-primary">grocery</span>
               <h2 class="text-[#181211] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">材料で探す</h2>
             </div>
-            <a class="text-primary text-sm font-bold hover:underline" href="/recipes">レシピ一覧へ</a>
+            <a class="text-primary text-sm font-bold hover:underline" href=`${baseUrl}recipes`>レシピ一覧へ</a>
           </div>
           <div class="flex gap-3 flex-wrap">
             {ingredients.map((item) => (
               <a
                 class="group flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-[#2f1f1c] border border-[#e6dddb] dark:border-[#3e2d2a] px-5 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer shadow-sm"
-                href={`/recipes?q=${encodeURIComponent(item.title)}`}
+                href={`${baseUrl}recipes?q=${encodeURIComponent(item.title)}`}
               >
                 <span class="text-[#181211] dark:text-white text-sm font-medium leading-normal group-hover:text-primary">{item.title}</span>
               </a>
@@ -94,7 +98,7 @@ const cookingTags = Array.from(new Set(recipes.flatMap((recipe) => recipe.cookin
               <span class="material-symbols-outlined text-primary">recommend</span>
               <h2 class="text-[#181211] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">おすすめレシピ一覧</h2>
             </div>
-            <a class="text-primary text-sm font-bold hover:underline" href="/recipes">すべて見る</a>
+            <a class="text-primary text-sm font-bold hover:underline" href=`${baseUrl}recipes`>すべて見る</a>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {recipes.map((recipe) => (

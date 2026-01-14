@@ -1,7 +1,10 @@
 ---
+// ベースURLを取得（末尾にスラッシュを確実に追加）
+const baseUrlRaw = import.meta.env.BASE_URL
+const baseUrl = baseUrlRaw.endsWith('/') ? baseUrlRaw : `${baseUrlRaw}/`
 const navItems = [
-  { href: '/', label: 'トップ' },
-  { href: '/recipes', label: 'レシピ一覧' },
+  { href: baseUrl, label: 'トップ' },
+  { href: `${baseUrl}recipes`, label: 'レシピ一覧' },
 ]
 ---
 

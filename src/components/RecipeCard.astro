@@ -2,11 +2,14 @@
 import type { Recipe } from '../lib/microcms'
 
 const { recipe } = Astro.props as { recipe: Recipe }
+// ベースURLを取得（末尾にスラッシュを確実に追加）
+const baseUrlRaw = import.meta.env.BASE_URL
+const baseUrl = baseUrlRaw.endsWith('/') ? baseUrlRaw : `${baseUrlRaw}/`
 ---
 
 <a
   class="flex flex-col group cursor-pointer bg-white dark:bg-[#2f1f1c] rounded-2xl overflow-hidden shadow-sm border border-[#e6dddb] dark:border-[#3e2d2a] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full"
-  href={`/recipes/${recipe.id}`}
+  href={`${baseUrl}recipes/${recipe.id}`}
 >
   <div class="w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 relative overflow-hidden shrink-0">
     <div class="absolute inset-0 flex items-center justify-center text-gray-300 dark:text-gray-600">
